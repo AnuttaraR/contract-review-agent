@@ -48,6 +48,10 @@ REQUIRED JSON SCHEMA:
   "termination_for_cause": "boolean | null",
   "services_description": "string | null",
   "key_deliverables": ["string"] or [],
+  "soc2_certified": "boolean | null",
+  "iso27001_certified": "boolean | null",
+  "security_breach_notification_hours": "integer | null (e.g. 24, 72)",
+  "modern_slavery_statement": "boolean | null",
   "blacklisted_terms_found": ["string"] or [],
   "risk_flags": ["string"] or [],
   "confidence_score": "number between 0.0 and 1.0",
@@ -64,10 +68,27 @@ EXTRACTED CONTRACT DATA:
 INTERNAL POLICY CONTEXT:
 {rag_context}
 
+CRITICAL RULES:
+- policy_violations: ONLY include items where the contract EXPLICITLY BREACHES a stated policy rule.
+  Do NOT include items where the contract meets or exceeds the policy requirement.
+  Do NOT include process steps (e.g. "approval required") — those are not contract violations.
+  Do NOT include gaps in documentation — put those in compliance_gaps.
+  IMPORTANT for thresholds: compare actual contract_value_total against the numeric threshold.
+  If value is BELOW the threshold (e.g. $65,000 < $100,000 threshold), do NOT flag it as a violation.
+- compliance_gaps: items that are unclear, undocumented, or require pre-execution verification but are NOT rule breaches.
+  Do not put threshold-based requirements here if the contract value is clearly below the threshold.
+- risk_assessment:
+  LOW  = no policy violations AND vendor is approved AND core compliance certifications confirmed (SOC2, ISO27001).
+         Pre-execution process steps (e.g. "provide insurance certificates before signing") do NOT raise risk above LOW.
+         A Tier 1 approved vendor with no violations and confirmed SOC2/ISO27001 is LOW risk.
+  MEDIUM = minor substantive gaps in contract terms OR unclearness in certification status OR minor policy ambiguity.
+           Do NOT assign MEDIUM solely due to pre-execution documentation checklist items.
+  HIGH = one or more genuine policy violations OR vendor not approved OR blacklisted terms found
+
 Return ONLY a JSON object — no explanation, no markdown:
 {{
   "vendor_approved": true | false | null,
-  "policy_violations": ["brief string per violation — max 20 words each"],
+  "policy_violations": ["brief string per ACTUAL breach — max 20 words each"],
   "compliance_gaps": ["brief string per gap — max 15 words each"],
   "sla_compliant": true | false | null,
   "risk_assessment": "LOW" | "MEDIUM" | "HIGH",

@@ -676,6 +676,194 @@ def generate_csv_databridge():
     return filepath
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. PDF — Clean SaaS contract designed to satisfy all policy checks (AUTO_APPROVE)
+# ─────────────────────────────────────────────────────────────────────────────
+def generate_pdf_nexus_clean():
+    filepath = os.path.join(OUTPUT_DIR, "nexus_saas_clean.pdf")
+    doc = SimpleDocTemplate(filepath, pagesize=A4,
+                            leftMargin=2*cm, rightMargin=2*cm,
+                            topMargin=2*cm, bottomMargin=2*cm)
+    styles = getSampleStyleSheet()
+    h1 = ParagraphStyle("h1", parent=styles["Heading1"], fontSize=16, spaceAfter=12)
+    h2 = ParagraphStyle("h2", parent=styles["Heading2"], fontSize=13, spaceAfter=8)
+    body = styles["BodyText"]
+    body.fontSize = 10
+    body.leading = 14
+
+    story = []
+    story.append(Paragraph("SAAS PLATFORM LICENSE AGREEMENT", h1))
+    story.append(Paragraph("Contract Reference: SAAS-2026-CS-AUTO-001", body))
+    story.append(Spacer(1, 0.4*cm))
+
+    story.append(Paragraph("PARTIES", h2))
+    story.append(Paragraph(
+        "This SaaS Platform License Agreement ('Agreement') is entered into as of <b>1 September 2026</b> "
+        "by and between <b>CloudSecure GmbH</b>, a company incorporated in Germany "
+        "(Registration No. <b>DE-55443322</b>), with its principal office at "
+        "Hauptstrasse 42, 80331 Munich, Germany ('Vendor'), "
+        "and <b>Flat Rock Technology Ltd</b>, a company registered in England and Wales ('Client').", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("VENDOR REGISTRY STATUS", h2))
+    story.append(Paragraph(
+        "CloudSecure GmbH is registered as a <b>Tier 1 Approved Vendor</b> in the Client's "
+        "Approved Vendors Registry (Registry ID: CS-T1-2023-007, valid through 2026-12-31). "
+        "All due diligence checks, including financial stability review, security audit, and "
+        "reference checks, were completed and passed with no adverse findings. "
+        "Vendor contact: Klaus Weber, CEO (k.weber@cloudsecure.de, +49 89 555 0100).", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("1. SERVICES", h2))
+    story.append(Paragraph(
+        "Vendor shall provide cloud-hosted data analytics SaaS platform services, including: "
+        "(a) real-time business intelligence dashboards; (b) automated reporting and data exports; "
+        "(c) REST API access for third-party integrations; (d) dedicated customer success management; "
+        "and (e) standard 9-to-5 technical support with emergency out-of-hours coverage for P1 incidents. "
+        "No custom software development is involved — this is a standard SaaS subscription. "
+        "No source code escrow is required or applicable under this Agreement.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("2. CONTRACT TERM &amp; FINANCIAL TERMS", h2))
+    data = [
+        ["Field", "Value"],
+        ["Contract Type", "SaaS Platform License Agreement"],
+        ["Annual License Fee", "USD 45,000"],
+        ["Total Contract Value", "USD 45,000 (12-month initial term)"],
+        ["Contract Start Date", "2026-09-01"],
+        ["Contract End Date", "2027-08-31"],
+        ["Auto-Renewal", "No — manual renewal required"],
+        ["Payment Terms", "Net-30 — invoiced quarterly in arrears"],
+        ["Payment Schedule", "Quarterly in arrears: USD 11,250 per quarter"],
+        ["Notice Period", "60 days written notice for termination for convenience"],
+    ]
+    t = Table(data, colWidths=[6*cm, 10*cm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1a3c5e")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f0f4f8")]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("PADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story.append(t)
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph(
+        "<b>Modern Slavery Act 2015 compliance note:</b> The annual contract value is USD 45,000, "
+        "which is below the USD 100,000 threshold requiring a formal Modern Slavery Act statement. "
+        "Accordingly, no Modern Slavery attestation is required for this Agreement. "
+        "Vendor voluntarily confirms that its supply chain practices comply with the Act.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("3. SERVICE LEVEL AGREEMENT", h2))
+    sla_data = [
+        ["SLA Parameter", "Commitment"],
+        ["Platform Uptime", "99.9% monthly (Nines SLA)"],
+        ["P1 Incident Response", "Within 1 hour (24/7)"],
+        ["P2 Incident Response", "Within 4 hours (business hours)"],
+        ["Scheduled Maintenance", "48-hour advance notice; max 4 hours/month"],
+        ["SLA Penalty", "5% monthly fee credit per 0.1% uptime shortfall"],
+        ["SLA Reporting", "Monthly uptime report delivered by 5th of following month"],
+    ]
+    t2 = Table(sla_data, colWidths=[7*cm, 9*cm])
+    t2.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1e6b3a")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#edf7f0")]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("PADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story.append(t2)
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("4. LIABILITY &amp; INDEMNIFICATION", h2))
+    story.append(Paragraph(
+        "Each party's total aggregate liability under this Agreement shall not exceed "
+        "<b>USD 90,000</b> (equivalent to 2x annual contract value), except for: "
+        "(i) death or personal injury caused by negligence; (ii) fraud or fraudulent misrepresentation; "
+        "and (iii) breaches of data protection obligations. "
+        "Vendor provides intellectual property indemnification. Mutual indemnification for negligence. "
+        "Consequential, indirect, or punitive damages are excluded. "
+        "Vendor maintains professional indemnity insurance of <b>USD 5,000,000</b> and public liability "
+        "insurance of <b>USD 2,000,000</b> — certificates provided to Client prior to execution.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("5. DATA PROTECTION &amp; SECURITY", h2))
+    story.append(Paragraph(
+        "5.1 <b>GDPR Compliance:</b> Vendor processes all personal data in accordance with the UK GDPR "
+        "and Data Protection Act 2018. A Data Processing Agreement (DPA) is attached as Annexure A "
+        "and forms part of this Agreement. All processing occurs within the UK and EEA.", body))
+    story.append(Spacer(1, 0.2*cm))
+    story.append(Paragraph(
+        "5.2 <b>Security Certifications:</b> Vendor holds current SOC 2 Type II certification "
+        "(Certificate No. CS-SOC2-2025-007, issued by PwC GmbH, valid through 2026-12-31) "
+        "and ISO/IEC 27001:2022 certification (Certificate No. CS-ISO27001-2024-012, "
+        "issued by TÜV Rheinland, valid through 2027-06-30). Copies of current certificates have been "
+        "provided to Client's information security team and are maintained in the Vendor Registry.", body))
+    story.append(Spacer(1, 0.2*cm))
+    story.append(Paragraph(
+        "5.3 <b>Penetration Testing:</b> Vendor conducts annual third-party penetration testing of "
+        "all platform components. Most recent test completed February 2026 by NCC Group "
+        "(Report Ref: NCCG-2026-CS-031). No critical or high-severity findings. Summary report "
+        "shared with Client information security team on 2026-03-05. Next test scheduled Q1 2027.", body))
+    story.append(Spacer(1, 0.2*cm))
+    story.append(Paragraph(
+        "5.4 <b>Security Breach Notification:</b> In the event of a confirmed personal data breach, "
+        "Vendor shall notify Client within <b>72 hours</b> of becoming aware, in accordance with "
+        "UK GDPR Article 33. Notification shall include details of the breach, categories of data "
+        "affected, likely consequences, and remediation measures taken.", body))
+    story.append(Spacer(1, 0.2*cm))
+    story.append(Paragraph(
+        "5.5 <b>Audit Rights:</b> Client may audit Vendor's relevant security controls with "
+        "30 days' written notice, limited to once per calendar year and at Client's cost. "
+        "Vendor will provide reasonable access and documentation to support such audit.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("6. INTELLECTUAL PROPERTY", h2))
+    story.append(Paragraph(
+        "Vendor retains all intellectual property rights in and to the platform, software, and "
+        "documentation. Client retains full ownership of: (a) all Client data uploaded to or "
+        "generated through the platform; (b) all outputs, reports, and exports produced; and "
+        "(c) any Client-specific configurations. Source code escrow is not applicable to this "
+        "Agreement as no custom software development is provided.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("7. TERMINATION", h2))
+    story.append(Paragraph(
+        "7.1 <b>Termination for Convenience:</b> Either party may terminate this Agreement without cause "
+        "by providing <b>60 days</b> prior written notice. Client shall receive a pro-rated refund of "
+        "any pre-paid fees for the unused portion of the notice period. "
+        "7.2 <b>Termination for Cause:</b> Either party may terminate immediately upon written notice "
+        "if the other party commits a material breach that remains uncured for 30 days after notice, "
+        "or upon insolvency, liquidation, or cessation of business.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("8. GOVERNING LAW &amp; DISPUTE RESOLUTION", h2))
+    story.append(Paragraph(
+        "This Agreement is governed by and construed in accordance with the laws of "
+        "<b>England and Wales</b>. Any dispute shall first be referred to senior management of both "
+        "parties for good-faith resolution (mediation, 30 days). Failing resolution, disputes shall "
+        "be submitted to final and binding arbitration under the Rules of the "
+        "<b>London Court of International Arbitration (LCIA)</b>, seated in London, England.", body))
+    story.append(Spacer(1, 0.5*cm))
+
+    story.append(Paragraph("SIGNATORIES", h2))
+    story.append(Paragraph(
+        "For and on behalf of <b>CloudSecure GmbH</b>: "
+        "Klaus Weber, Chief Executive Officer — k.weber@cloudsecure.de | Date: 2026-08-15", body))
+    story.append(Paragraph(
+        "For and on behalf of <b>Flat Rock Technology Ltd</b>: "
+        "Sarah Thompson, Chief Procurement Officer — s.thompson@flatrocktech.com | Date: 2026-08-18", body))
+
+    doc.build(story)
+    print(f"Generated: {filepath}")
+    return filepath
+
+
 if __name__ == "__main__":
     print("Generating sample documents...")
     generate_pdf_msa()
@@ -684,4 +872,5 @@ if __name__ == "__main__":
     generate_pdf_cloudsecure()
     generate_pdf_futuretech()
     generate_csv_databridge()
+    generate_pdf_nexus_clean()
     print("\nAll sample documents generated in sample_docs/")

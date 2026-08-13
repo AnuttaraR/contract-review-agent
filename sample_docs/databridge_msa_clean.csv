@@ -1,0 +1,42 @@
+﻿field,value
+contract_id,MSA-2026-DB-AUTO-001
+contract_title,Master Integration Services Agreement
+vendor_name,DataBridge Inc
+vendor_registration_number,US-98765432
+vendor_address,"200 Data Way, Austin, TX 78701, USA"
+vendor_contact_email,contracts@databridgeinc.com
+vendor_contact_phone,+1 512 555 0200
+contract_type,Integration Services MSA
+contract_value_total,120000
+contract_value_currency,USD
+payment_terms,Net-30
+payment_schedule,Quarterly invoicing in arrears
+start_date,2026-09-01
+end_date,2027-08-31
+auto_renewal,No
+notice_period_days,60
+governing_law,England and Wales
+dispute_resolution,Mediation first; failing which LCIA Arbitration in London
+liability_cap,240000
+liability_cap_currency,USD
+indemnification_clause,Yes - mutual indemnification
+ip_ownership,Client owns all deliverables integrations and derived works
+data_processing_agreement,Yes - GDPR-compliant DPA attached as Annex A
+gdpr_compliant,Yes
+soc2_certified,Yes - SOC2 Type II (Certificate CS-DB-2026)
+security_breach_notification,Yes - 72-hour notification obligation confirmed
+insurance_pi_coverage,GBP 5000000 Professional Indemnity
+insurance_pl_coverage,GBP 2000000 Public Liability
+sla_uptime_percentage,99.9
+sla_response_time_hours,1
+sla_penalty_clause,Yes - 5 percent monthly fee credit per breach
+termination_for_convenience,Yes - 60 days written notice
+termination_for_cause,Yes - 30 days cure notice
+services_description,Enterprise data integration platform connecting client ERP CRM and data warehouse with real-time ETL pipelines monitoring and alerting
+key_deliverable_1,ETL pipeline connecting SAP ERP to Snowflake data warehouse
+key_deliverable_2,Real-time CRM sync with conflict resolution logic
+key_deliverable_3,Data quality monitoring dashboard with automated alerting
+key_deliverable_4,Runbooks and knowledge transfer sessions
+signatory_vendor,Marcus Nguyen - VP Engineering
+signatory_client,Sarah Thompson - Chief Procurement Officer
+execution_date,2026-08-25
