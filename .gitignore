@@ -1,0 +1,16 @@
+.env
+.venv/
+.venv311/
+.claude/
+__pycache__/
+*.pyc
+*.pyo
+*.db
+chroma_db/
+credentials.json
+token.json
+*.egg-info/
+dist/
+build/
+.idea/
+*.log
