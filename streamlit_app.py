@@ -128,7 +128,44 @@ def render_enrichment(enrichment: dict):
         st.info(f"**Notes:** {notes}")
 
 
-def render_processing_result(contract, result, status, reason):
+def render_rag_evidence(extracted: dict, inline: bool = False):
+    """Show which KB chunks were retrieved for RAG enrichment of this contract.
+
+    inline=True renders without nested expanders (use when already inside a st.expander).
+    """
+    from app.knowledge_base.query import build_rag_query
+    from app.knowledge_base.loader import get_store
+
+    store = get_store()
+    query = build_rag_query(extracted)
+    chunks = store.query(query, n_results=6)
+
+    if not chunks:
+        st.info("No KB chunks matched for this contract.")
+        return
+
+    st.caption(f"BM25 retrieval query: `{query[:120]}`")
+    st.markdown(f"**{len(chunks)} policy chunk(s) retrieved and fed to Claude:**")
+
+    if inline:
+        for i, chunk in enumerate(chunks, 1):
+            source = chunk["metadata"]["source"].replace(".md", "").replace("_", " ").title()
+            score = chunk["score"]
+            preview = chunk["text"][:280].strip()
+            st.markdown(f"**Chunk {i} — {source}** `score: {score:.3f}`")
+            st.code(preview, language=None)
+            if i < len(chunks):
+                st.divider()
+    else:
+        for i, chunk in enumerate(chunks, 1):
+            source = chunk["metadata"]["source"].replace(".md", "").replace("_", " ").title()
+            score = chunk["score"]
+            preview = chunk["text"][:300].strip()
+            with st.expander(f"Chunk {i} — {source}   (relevance: {score:.3f})", expanded=(i == 1)):
+                st.code(preview, language=None)
+
+
+def render_processing_result(contract, result, status, reason, elapsed: float = 0.0):
     extracted = result.get("extracted", {})
     enrichment = result.get("enrichment", {})
     conf = result.get("confidence_score", 0)
@@ -147,14 +184,34 @@ def render_processing_result(contract, result, status, reason):
     )
 
     st.info(f"**Routing reason:** {reason}")
+    if elapsed:
+        st.caption(f"Processed in {elapsed:.1f}s — extraction + RAG enrichment via Claude")
 
-    tab1, tab2, tab3 = st.tabs(["Extracted Data", "RAG Enrichment", "Raw JSON"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Extracted Data", "RAG Enrichment", "RAG Evidence", "Raw JSON"])
     with tab1:
         render_extracted_table(extracted)
     with tab2:
         render_enrichment(enrichment)
     with tab3:
+        render_rag_evidence(extracted)
+    with tab4:
         st.json(result)
+
+    st.divider()
+    act_col1, act_col2 = st.columns(2)
+    with act_col1:
+        st.download_button(
+            "⬇ Export as JSON",
+            data=json.dumps(result, indent=2, default=str),
+            file_name=f"contract_{contract.id}_{(contract.vendor_name or 'unknown').replace(' ', '_')}.json",
+            mime="application/json",
+            use_container_width=True,
+        )
+    with act_col2:
+        if status == ContractStatus.NEEDS_REVIEW:
+            if st.button("Go to Review Queue →", use_container_width=True):
+                st.session_state["_nav_target"] = "Review Queue"
+                st.rerun()
 
 
 def render_review_card(contract: Contract):
@@ -178,11 +235,13 @@ def render_review_card(contract: Contract):
         col3.metric("Confidence", f"{conf:.0%}")
         col4.metric("Risk", enrichment.get("risk_assessment", "—"))
 
-        tab1, tab2 = st.tabs(["Details", "Policy Analysis"])
+        tab1, tab2, tab3 = st.tabs(["Details", "Policy Analysis", "RAG Evidence"])
         with tab1:
             render_extracted_table(extracted)
         with tab2:
             render_enrichment(enrichment)
+        with tab3:
+            render_rag_evidence(extracted, inline=True)
 
         st.divider()
         reviewer_notes = st.text_area(
@@ -218,9 +277,13 @@ with st.sidebar:
     st.caption("Powered by Claude AI + RAG")
     st.divider()
 
+    _nav_options = ["Upload & Process", "Review Queue", "Approved Contracts", "All Contracts", "Knowledge Base"]
+    _nav_default = st.session_state.pop("_nav_target", "Upload & Process")
+    _nav_idx = _nav_options.index(_nav_default) if _nav_default in _nav_options else 0
     page = st.radio(
         "Navigation",
-        ["Upload & Process", "Review Queue", "Approved Contracts", "All Contracts", "Knowledge Base"],
+        _nav_options,
+        index=_nav_idx,
         label_visibility="collapsed",
     )
 
@@ -275,9 +338,11 @@ if page == "Upload & Process":
                     st.stop()
 
             progress = st.progress(0, text="Extracting contract data with Claude AI...")
+            _t0 = time.time()
             try:
                 result = process_document(parsed)
-                progress.progress(75, text="Routing decision...")
+                _elapsed = time.time() - _t0
+                progress.progress(75, text=f"Routing decision... (extracted in {_elapsed:.1f}s)")
             except Exception as e:
                 st.error(f"AI extraction failed: {e}")
                 st.stop()
@@ -302,7 +367,7 @@ if page == "Upload & Process":
                 db.close()
 
             st.divider()
-            render_processing_result(contract, result, status, reason)
+            render_processing_result(contract, result, status, reason, elapsed=_elapsed)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -405,6 +470,67 @@ elif page == "All Contracts":
         col4.metric("Needs Review", len(needs_review))
         col5.metric("Rejected", len(rejected))
 
+        # ── Charts ────────────────────────────────────────────────────────────
+        try:
+            import altair as alt
+
+            chart_c1, chart_c2 = st.columns(2)
+
+            with chart_c1:
+                _status_rows = [
+                    {"Status": "Auto-Approved", "Count": len(auto_approved)},
+                    {"Status": "Human Approved", "Count": len(human_approved)},
+                    {"Status": "Needs Review", "Count": len(needs_review)},
+                    {"Status": "Rejected", "Count": len(rejected)},
+                ]
+                _status_df = pd.DataFrame([r for r in _status_rows if r["Count"] > 0])
+                if not _status_df.empty:
+                    _donut = (
+                        alt.Chart(_status_df)
+                        .mark_arc(innerRadius=50, outerRadius=100)
+                        .encode(
+                            theta=alt.Theta("Count:Q"),
+                            color=alt.Color(
+                                "Status:N",
+                                scale=alt.Scale(
+                                    domain=["Auto-Approved", "Human Approved", "Needs Review", "Rejected"],
+                                    range=["#28a745", "#20c997", "#ffc107", "#dc3545"],
+                                ),
+                                legend=alt.Legend(orient="bottom"),
+                            ),
+                            tooltip=["Status:N", "Count:Q"],
+                        )
+                        .properties(title="Status Distribution", width=260, height=220)
+                    )
+                    st.altair_chart(_donut, use_container_width=True)
+
+            with chart_c2:
+                _bins = [("< 50%", 0, 0.5), ("50–75%", 0.5, 0.75), ("≥ 75%", 0.75, 1.01)]
+                _conf_rows = [
+                    {"Range": label, "Count": sum(1 for c in all_contracts if lo <= (c.confidence_score or 0) < hi),
+                     "Color": color}
+                    for label, lo, hi, color in [
+                        ("< 50%", 0, 0.5, "#dc3545"),
+                        ("50–75%", 0.5, 0.75, "#ffc107"),
+                        ("≥ 75%", 0.75, 1.01, "#28a745"),
+                    ]
+                ]
+                _conf_df = pd.DataFrame(_conf_rows)
+                _bar = (
+                    alt.Chart(_conf_df)
+                    .mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
+                    .encode(
+                        x=alt.X("Range:O", sort=["< 50%", "50–75%", "≥ 75%"], title="Confidence Range", axis=alt.Axis(labelAngle=0)),
+                        y=alt.Y("Count:Q", title="Contracts", axis=alt.Axis(tickMinStep=1)),
+                        color=alt.Color("Color:N", scale=None, legend=None),
+                        tooltip=["Range:N", "Count:Q"],
+                    )
+                    .properties(title="Confidence Distribution", width=260, height=220)
+                )
+                st.altair_chart(_bar, use_container_width=True)
+        except Exception:
+            pass  # charts are non-critical
+
         st.divider()
         rows = []
         for c in all_contracts:
@@ -465,10 +591,47 @@ elif page == "Knowledge Base":
             st.markdown(content)
 
     st.divider()
-    st.subheader("Test a RAG Query")
-    test_query = st.text_input("Query the knowledge base", placeholder="e.g. payment terms Net-30")
-    if test_query:
-        from app.knowledge_base.query import query_knowledge_base
-        with st.spinner("Querying..."):
-            result = query_knowledge_base(test_query, n_results=3)
-        st.text_area("Retrieved context", value=result, height=300)
+    st.subheader("Policy Assistant")
+    st.caption(
+        "Ask a natural language question about your procurement policies. "
+        "The system retrieves the most relevant policy chunks via BM25 and uses Claude to synthesise a precise answer."
+    )
+
+    _example_questions = [
+        "What is the maximum contract value for auto-approval?",
+        "Which vendors are pre-approved for fast-track processing?",
+        "What are our SLA uptime requirements?",
+        "What payment terms do we accept?",
+        "When is a Data Processing Agreement required?",
+    ]
+    _selected_example = st.selectbox(
+        "Try an example question or type your own below:",
+        ["— select —"] + _example_questions,
+        key="kb_example",
+    )
+
+    _question = st.text_input(
+        "Your question",
+        value=_selected_example if _selected_example != "— select —" else "",
+        placeholder="e.g. What are our SLA uptime requirements?",
+        key="kb_question",
+    )
+
+    if _question and _question != "— select —":
+        with st.spinner("Retrieving policy context and generating answer..."):
+            from app.knowledge_base.query import answer_question
+            _qa = answer_question(_question)
+
+        st.markdown("**Answer:**")
+        st.info(_qa["answer"])
+
+        if _qa.get("sources"):
+            st.caption(f"Sources consulted: {', '.join(_qa['sources'])}")
+
+        with st.expander(f"Retrieved policy chunks ({len(_qa.get('chunks', []))})", expanded=False):
+            for _chunk in _qa.get("chunks", []):
+                _src = _chunk["metadata"]["source"]
+                _score = _chunk["score"]
+                st.markdown(f"**{_src}** — relevance score: `{_score:.3f}`")
+                st.code(_chunk["text"][:400], language=None)
+                st.divider()

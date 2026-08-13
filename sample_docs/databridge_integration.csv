@@ -1,0 +1,38 @@
+field,value
+contract_id,INT-2026-DB-022
+contract_title,Data Integration Services Agreement
+vendor_name,DataBridge Inc
+vendor_registration_number,US-98765432
+vendor_address,"200 Data Way, Austin, TX 78701, USA"
+vendor_contact_email,contracts@databridgeinc.com
+vendor_contact_phone,+1 512 555 0200
+contract_type,Integration Services
+contract_value_total,48000
+contract_value_currency,USD
+payment_terms,Net-30
+payment_schedule,Monthly invoicing in arrears
+start_date,2026-08-15
+end_date,2027-08-14
+auto_renewal,No
+notice_period_days,30
+governing_law,Texas - United States
+dispute_resolution,AAA Arbitration - Austin TX
+liability_cap,96000
+liability_cap_currency,USD
+indemnification_clause,Yes
+ip_ownership,Client owns all deliverables and integrations
+data_processing_agreement,Yes
+gdpr_compliant,Yes
+sla_uptime_percentage,99.5
+sla_response_time_hours,4
+sla_penalty_clause,Yes
+termination_for_convenience,Yes
+termination_for_cause,Yes
+services_description,"ETL pipeline development, API integration with client ERP and CRM systems, data quality monitoring"
+key_deliverable_1,ETL pipeline from 3 source systems to data warehouse
+key_deliverable_2,ERP/CRM API connectors with real-time sync
+key_deliverable_3,Data quality dashboard and alerting
+key_deliverable_4,Technical documentation and runbooks
+signatory_vendor,Marcus Nguyen - VP Engineering
+signatory_client,Sarah Thompson - Chief Procurement Officer
+execution_date,2026-08-10

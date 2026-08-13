@@ -407,9 +407,281 @@ def generate_csv_batch():
     return filepath
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. PDF — SaaS License Agreement (CloudSecure GmbH) — Tier 1, expect AUTO_APPROVE
+# ─────────────────────────────────────────────────────────────────────────────
+def generate_pdf_cloudsecure():
+    filepath = os.path.join(OUTPUT_DIR, "cloudsecure_saas.pdf")
+    doc = SimpleDocTemplate(filepath, pagesize=A4,
+                            leftMargin=2*cm, rightMargin=2*cm,
+                            topMargin=2*cm, bottomMargin=2*cm)
+    styles = getSampleStyleSheet()
+    h1 = ParagraphStyle("h1", parent=styles["Heading1"], fontSize=16, spaceAfter=12)
+    h2 = ParagraphStyle("h2", parent=styles["Heading2"], fontSize=13, spaceAfter=8)
+    body = styles["BodyText"]
+    body.fontSize = 10
+    body.leading = 14
+
+    story = []
+    story.append(Paragraph("SAAS LICENSE AGREEMENT", h1))
+    story.append(Paragraph("Contract Reference: SAAS-2026-CS-017", body))
+    story.append(Spacer(1, 0.4*cm))
+
+    story.append(Paragraph("PARTIES", h2))
+    story.append(Paragraph(
+        "This SaaS License Agreement ('Agreement') is entered into as of <b>1 July 2026</b> "
+        "by and between <b>CloudSecure GmbH</b>, registered in Germany (Reg. No. <b>DE-55443322</b>), "
+        "Hauptstrasse 42, 80331 Munich, Germany ('Vendor'), and <b>Acme Corporation Ltd</b> ('Client').", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("1. SERVICES", h2))
+    story.append(Paragraph(
+        "Vendor provides cloud-based cybersecurity platform services including threat intelligence, "
+        "endpoint detection & response (EDR), SIEM integration, automated incident response, and "
+        "24/7 Security Operations Centre (SOC) monitoring.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("2. CONTRACT TERM & VALUE", h2))
+    data = [
+        ["Field", "Value"],
+        ["Contract Type", "SaaS License Agreement"],
+        ["Annual License Fee", "EUR 75,000"],
+        ["Total Contract Value", "EUR 75,000 (1-year initial term)"],
+        ["Start Date", "2026-07-01"],
+        ["End Date", "2027-06-30"],
+        ["Auto-Renewal", "Yes — annual, with 60-day opt-out notice"],
+        ["Payment Terms", "Net-30 — invoiced quarterly in advance"],
+    ]
+    t = Table(data, colWidths=[6*cm, 10*cm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1a5276")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#eaf4fb")]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("PADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story.append(t)
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("3. SERVICE LEVEL AGREEMENT", h2))
+    sla_data = [
+        ["SLA Parameter", "Commitment"],
+        ["Platform Uptime", "99.99% monthly (Four Nines — Tier 1 Critical)"],
+        ["Critical Alert Response", "Within 15 minutes"],
+        ["Standard Incident Response", "Within 1 hour"],
+        ["Scheduled Maintenance", "72-hour advance notice"],
+        ["SLA Penalty", "10% monthly fee credit per 0.1% uptime breach"],
+    ]
+    t2 = Table(sla_data, colWidths=[7*cm, 9*cm])
+    t2.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1e8449")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#eafaf1")]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("PADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story.append(t2)
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("4. LIABILITY & INDEMNIFICATION", h2))
+    story.append(Paragraph(
+        "Each party's total liability shall not exceed <b>EUR 150,000</b> (2x annual contract value). "
+        "Vendor provides full IP indemnification. Mutual indemnification for negligence. "
+        "Consequential damages excluded except for data breaches.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("5. DATA PROTECTION", h2))
+    story.append(Paragraph(
+        "GDPR compliant. Data Processing Agreement (DPA) attached as Annex A. "
+        "All EU personal data processed within EU/EEA. SOC 2 Type II certified (cert. no. CS-SOC2-2026). "
+        "ISO 27001 certified. Data breach notification within 24 hours. "
+        "Client retains full data ownership and portability rights.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("6. INTELLECTUAL PROPERTY", h2))
+    story.append(Paragraph(
+        "Vendor retains ownership of the platform. Client retains ownership of all Client data, "
+        "configurations, and any custom integrations developed specifically for Client.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("7. TERMINATION", h2))
+    story.append(Paragraph(
+        "Either party may terminate for convenience with <b>60 days</b> written notice. "
+        "Immediate termination for cause (material breach, insolvency). "
+        "Pro-rated refund of pre-paid fees on termination for convenience.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("8. GOVERNING LAW", h2))
+    story.append(Paragraph(
+        "Governed by <b>German law</b>. Disputes resolved by Munich Commercial Court. "
+        "English translation of this Agreement prevails in case of conflict.", body))
+    story.append(Spacer(1, 0.5*cm))
+
+    story.append(Paragraph("SIGNATORIES", h2))
+    story.append(Paragraph(
+        "Vendor: Klaus Weber, CEO — k.weber@cloudsecure.de | Signed: 2026-06-25", body))
+    story.append(Paragraph(
+        "Client: Sarah Thompson, CPO — s.thompson@acmecorp.com | Signed: 2026-06-28", body))
+
+    doc.build(story)
+    print(f"Generated: {filepath}")
+    return filepath
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. PDF — High-Risk Dev Contract (FutureTech Systems) — Tier 3 Pending, expect REJECT
+# ─────────────────────────────────────────────────────────────────────────────
+def generate_pdf_futuretech():
+    filepath = os.path.join(OUTPUT_DIR, "futuretech_development.pdf")
+    doc = SimpleDocTemplate(filepath, pagesize=A4,
+                            leftMargin=2*cm, rightMargin=2*cm,
+                            topMargin=2*cm, bottomMargin=2*cm)
+    styles = getSampleStyleSheet()
+    h1 = ParagraphStyle("h1", parent=styles["Heading1"], fontSize=16, spaceAfter=12)
+    h2 = ParagraphStyle("h2", parent=styles["Heading2"], fontSize=13, spaceAfter=8)
+    body = styles["BodyText"]
+    body.fontSize = 10
+    body.leading = 14
+
+    story = []
+    story.append(Paragraph("SOFTWARE DEVELOPMENT AGREEMENT", h1))
+    story.append(Paragraph("Contract Reference: DEV-2026-FT-099", body))
+    story.append(Spacer(1, 0.4*cm))
+
+    story.append(Paragraph("PARTIES", h2))
+    story.append(Paragraph(
+        "This Agreement is entered into as of <b>1 October 2026</b> between "
+        "<b>FutureTech Systems Ltd</b>, incorporated in the Cayman Islands (Reg. No. <b>XX-00000000</b>), "
+        "PO Box 1234, George Town, Grand Cayman ('Vendor'), and Acme Corporation Ltd ('Client').", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("1. SERVICES", h2))
+    story.append(Paragraph(
+        "Vendor shall develop a bespoke trading algorithm and high-frequency data processing platform "
+        "for Client. All source code, algorithms, models, and derivative works shall remain the "
+        "<b>sole and exclusive intellectual property of Vendor</b> at all times.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("2. CONTRACT TERMS", h2))
+    data = [
+        ["Field", "Value"],
+        ["Contract Type", "Software Development Agreement"],
+        ["Total Contract Value", "USD 500,000"],
+        ["Payment Terms", "Net-7 days — full payment within 7 days of invoice"],
+        ["Start Date", "2026-10-01"],
+        ["End Date", "2027-09-30"],
+        ["Auto-Renewal", "Yes — automatically renews annually unless terminated"],
+        ["Notice Period", "7 days written notice required to terminate"],
+        ["Governing Law", "Cayman Islands — Grand Cayman"],
+        ["Dispute Resolution", "Private arbitration, venue at Vendor's sole discretion"],
+    ]
+    t = Table(data, colWidths=[6*cm, 10*cm])
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#7b241c")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#fdedec")]),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+        ("PADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story.append(t)
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("3. LIABILITY", h2))
+    story.append(Paragraph(
+        "Vendor's total liability under this Agreement is capped at <b>USD 1,000</b> (one thousand dollars). "
+        "Client waives all rights to consequential, indirect, or punitive damages. "
+        "No indemnification is provided for third-party claims.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("4. DATA & COMPLIANCE", h2))
+    story.append(Paragraph(
+        "GDPR compliance: <b>Not applicable — Vendor is not a data processor</b>. "
+        "No Data Processing Agreement. No SLA commitments provided. "
+        "Vendor may use Client data for its own product development and model training.", body))
+    story.append(Spacer(1, 0.3*cm))
+
+    story.append(Paragraph("5. TERMINATION", h2))
+    story.append(Paragraph(
+        "<b>Client may NOT terminate for convenience.</b> "
+        "Early termination by Client triggers a penalty equal to the full remaining contract value. "
+        "Vendor may terminate with 7 days notice and retain all fees paid.", body))
+    story.append(Spacer(1, 0.5*cm))
+
+    story.append(Paragraph("SIGNATORIES", h2))
+    story.append(Paragraph(
+        "Vendor: J. Smith, Director — futuretech@offshore-email.ky | Signed: 2026-09-28", body))
+    story.append(Paragraph(
+        "Client: Sarah Thompson, CPO — s.thompson@acmecorp.com | Signed: 2026-09-30", body))
+
+    doc.build(story)
+    print(f"Generated: {filepath}")
+    return filepath
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. CSV — DataBridge Integration Contract — Tier 1, clean terms, expect AUTO_APPROVE
+# ─────────────────────────────────────────────────────────────────────────────
+def generate_csv_databridge():
+    filepath = os.path.join(OUTPUT_DIR, "databridge_integration.csv")
+    rows = [
+        ("contract_id", "INT-2026-DB-022"),
+        ("contract_title", "Data Integration Services Agreement"),
+        ("vendor_name", "DataBridge Inc"),
+        ("vendor_registration_number", "US-98765432"),
+        ("vendor_address", "200 Data Way, Austin, TX 78701, USA"),
+        ("vendor_contact_email", "contracts@databridgeinc.com"),
+        ("vendor_contact_phone", "+1 512 555 0200"),
+        ("contract_type", "Integration Services"),
+        ("contract_value_total", "48000"),
+        ("contract_value_currency", "USD"),
+        ("payment_terms", "Net-30"),
+        ("payment_schedule", "Monthly invoicing in arrears"),
+        ("start_date", "2026-08-15"),
+        ("end_date", "2027-08-14"),
+        ("auto_renewal", "No"),
+        ("notice_period_days", "30"),
+        ("governing_law", "Texas - United States"),
+        ("dispute_resolution", "AAA Arbitration - Austin TX"),
+        ("liability_cap", "96000"),
+        ("liability_cap_currency", "USD"),
+        ("indemnification_clause", "Yes"),
+        ("ip_ownership", "Client owns all deliverables and integrations"),
+        ("data_processing_agreement", "Yes"),
+        ("gdpr_compliant", "Yes"),
+        ("sla_uptime_percentage", "99.5"),
+        ("sla_response_time_hours", "4"),
+        ("sla_penalty_clause", "Yes"),
+        ("termination_for_convenience", "Yes"),
+        ("termination_for_cause", "Yes"),
+        ("services_description", "ETL pipeline development, API integration with client ERP and CRM systems, data quality monitoring"),
+        ("key_deliverable_1", "ETL pipeline from 3 source systems to data warehouse"),
+        ("key_deliverable_2", "ERP/CRM API connectors with real-time sync"),
+        ("key_deliverable_3", "Data quality dashboard and alerting"),
+        ("key_deliverable_4", "Technical documentation and runbooks"),
+        ("signatory_vendor", "Marcus Nguyen - VP Engineering"),
+        ("signatory_client", "Sarah Thompson - Chief Procurement Officer"),
+        ("execution_date", "2026-08-10"),
+    ]
+    with open(filepath, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["field", "value"])
+        writer.writerows(rows)
+    print(f"Generated: {filepath}")
+    return filepath
+
+
 if __name__ == "__main__":
     print("Generating sample documents...")
     generate_pdf_msa()
     generate_image_sow()
     generate_csv_batch()
+    generate_pdf_cloudsecure()
+    generate_pdf_futuretech()
+    generate_csv_databridge()
     print("\nAll sample documents generated in sample_docs/")
