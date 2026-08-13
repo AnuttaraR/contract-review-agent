@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session

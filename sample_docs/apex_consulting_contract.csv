@@ -1,0 +1,38 @@
+field,value
+contract_id,MSA-2026-APX-001
+contract_title,Master Service Agreement - Management Consulting Services
+vendor_name,Apex Consulting Group
+vendor_registration_number,US-44556677
+vendor_address,"350 Park Avenue, New York, NY 10022, USA"
+vendor_contact_email,contracts@apexconsulting.com
+vendor_contact_phone,+1 212 555 0100
+contract_type,MSA
+contract_value_total,320000
+contract_value_currency,USD
+payment_terms,Net-30
+payment_schedule,Quarterly invoicing in arrears
+start_date,2026-01-15
+end_date,2028-01-14
+auto_renewal,Yes
+notice_period_days,90
+governing_law,New York - United States
+dispute_resolution,ICC Arbitration - New York
+liability_cap,640000
+liability_cap_currency,USD
+indemnification_clause,Yes
+ip_ownership,Client owns all deliverables
+data_processing_agreement,Yes
+gdpr_compliant,Yes
+sla_uptime_percentage,99.9
+sla_response_time_hours,1
+sla_penalty_clause,Yes
+termination_for_convenience,Yes
+termination_for_cause,Yes
+services_description,Management consulting and strategic advisory services across digital transformation and operational efficiency programmes
+key_deliverable_1,Monthly strategic advisory sessions
+key_deliverable_2,Quarterly transformation roadmap updates
+key_deliverable_3,Annual benchmarking report
+key_deliverable_4,On-demand analyst access (up to 40 hrs/month)
+signatory_vendor,Michael Chen - Managing Partner
+signatory_client,Sarah Thompson - Chief Procurement Officer
+execution_date,2026-01-10
