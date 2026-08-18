@@ -13,7 +13,6 @@ Maintained by: Procurement & Legal Team
 | Nexus Analytics Pte | SG-11223344 | Singapore | Analytics | 2027-03-31 |
 | PrimePath Logistics | AU-77889900 | Australia | Logistics | 2027-09-30 |
 | Apex Consulting Group | US-44556677 | United States | Professional Services | 2027-01-31 |
-| GlobalSoft Solutions | IN-33445566 | India | Software Development | 2026-09-30 |
 | SwiftPay Technologies | NL-22334455 | Netherlands | Payment Processing | 2027-08-31 |
 
 ## Tier 2 — Conditionally Approved (Require Legal Sign-off Above $250,000)
@@ -30,6 +29,7 @@ Vendors in this list are under evaluation. Do not auto-approve contracts.
 
 - FutureTech Systems (Under due diligence since 2026-06-15)
 - NovaBridge Partners (Financial audit pending)
+- GlobalSoft Solutions (IN-33445566) — prior Tier 1 approval lapsed 2026-09-30, re-approval under evaluation
 
 ## Blacklisted / Suspended Vendors
 

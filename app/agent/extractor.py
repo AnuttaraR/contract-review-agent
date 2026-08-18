@@ -28,6 +28,7 @@ def extract_from_text(text: str) -> dict:
     response = get_client().messages.create(
         model=MODEL,
         max_tokens=4096,
+        temperature=0,
         system=EXTRACTION_SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -42,6 +43,7 @@ def extract_from_image(image_b64: str, media_type: str) -> dict:
     response = get_client().messages.create(
         model=MODEL,
         max_tokens=4096,
+        temperature=0,
         system=EXTRACTION_SYSTEM_PROMPT,
         messages=[
             {
@@ -82,6 +84,7 @@ def enrich_with_rag(extracted: dict) -> dict:
     response = get_client().messages.create(
         model=MODEL,
         max_tokens=4096,
+        temperature=0,
         messages=[{"role": "user", "content": prompt}],
     )
 

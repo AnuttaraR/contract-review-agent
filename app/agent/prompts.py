@@ -73,8 +73,32 @@ CRITICAL RULES:
   Do NOT include items where the contract meets or exceeds the policy requirement.
   Do NOT include process steps (e.g. "approval required") — those are not contract violations.
   Do NOT include gaps in documentation — put those in compliance_gaps.
-  IMPORTANT for thresholds: compare actual contract_value_total against the numeric threshold.
-  If value is BELOW the threshold (e.g. $65,000 < $100,000 threshold), do NOT flag it as a violation.
+  IMPORTANT for ALL numeric threshold comparisons (contract value, liability cap, notice period,
+  breach/incident notification hours, uptime percentage, response time, etc.) — do the actual
+  arithmetic before deciding:
+    - "Minimum X" / "at least X" / "required threshold X": contract is compliant if its value
+      is >= X (for caps, notice periods, uptime, coverage amounts) or <= X (for response times,
+      notification windows, payment-term days) — i.e. compliant if it is AS STRICT OR STRICTER
+      than the stated minimum. Only flag a violation if the contract is actually worse than X.
+    - "Recommended" / "preferred" / "standard" (not "minimum" or "required"): meeting only the
+      stated minimum while falling short of a merely-recommended value is NEVER a violation.
+      At most it is a compliance_gap, and only if genuinely ambiguous — do not gap it just
+      because the contract met the floor instead of the recommended ceiling.
+    - A rule that applies only "for contracts > $X" or "exceeding $X": if contract_value_total
+      is at or below X, the rule does not apply at all — do not flag it as a violation OR a gap.
+  Show this arithmetic to yourself before writing a violation: state the contract's actual number
+  and the policy's actual number, and confirm the contract number is on the non-compliant side.
+  - The extraction schema's "indemnification_clause" is a single boolean covering indemnification
+    in general (it does not separately track IP-specific vs general indemnification). If
+    indemnification_clause is true, treat that as satisfying any policy requirement for
+    "indemnification" or "IP indemnification" — do not flag IP indemnification as missing just
+    because the schema doesn't have a dedicated field for it.
+  - Annual vs. total value: contract_value_total is the value over the FULL contract term, not
+    per year. If a policy rule states an ANNUAL threshold (e.g. "for contracts > $100,000
+    annually") and the contract spans more than one year, do NOT compare contract_value_total
+    directly against that threshold — you cannot reliably infer annual value from the data given.
+    In that case, do not flag the rule as a violation; if genuinely material, add ONE compliance_gap
+    noting annual value could not be confirmed from the extracted total.
 - compliance_gaps: items that are unclear, undocumented, or require pre-execution verification but are NOT rule breaches.
   Do not put threshold-based requirements here if the contract value is clearly below the threshold.
 - risk_assessment:

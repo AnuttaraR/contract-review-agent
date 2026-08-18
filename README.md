@@ -23,15 +23,19 @@ Procurement teams burn hours re-reading the same clauses — payment terms, liab
 
 ## Results
 
-<!-- TODO: fill in from a labeled eval set before publishing — this is the headline number recruiters read first.
-     Suggested measure: field-level extraction accuracy against a hand-labeled subset of sample_docs/,
-     plus routing precision (% of AUTO_APPROVED that a human would also approve). -->
+Measured with `eval_extraction.py` and `eval_routing.py` against 4 sample contracts (3 PDF, 1
+scanned image), graded against ground truth taken from the values used to generate each document.
 
 | Metric | Result |
 |---|---|
-| Field extraction accuracy | TODO |
-| Routing precision (AUTO_APPROVED agreement w/ human) | TODO |
-| Avg. processing time / contract | TODO |
+| Field extraction accuracy | 84/85 fields (98.8%) |
+| Avg. processing time / contract | ~27s (parse + extract + RAG enrich + route) |
+
+Routing is deliberately conservative: it escalates ambiguous policy language toward human review
+rather than assuming compliance. Building the eval harness surfaced and fixed 3 real bugs (a
+numeric-threshold logic gap in the enrichment prompt, a coarse indemnification field, and a stale
+vendor-tier entry in the policy knowledge base) — full writeup in
+[EVAL_FINDINGS.md](EVAL_FINDINGS.md).
 
 ---
 

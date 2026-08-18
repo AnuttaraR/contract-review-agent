@@ -212,7 +212,7 @@ def generate_image_sow():
         ("End Date", "2027-03-31"),
         ("Governing Law", "England and Wales"),
         ("Auto-Renewal", "No"),
-        ("Notice Period", "30 days"),
+        ("Notice Period", "60 days"),
     ]
     for label, value in details:
         draw.text((60, y), f"{label}:", fill=(80, 80, 80), font=font_small)
@@ -253,7 +253,8 @@ def generate_image_sow():
         "GDPR Compliant: Yes  |  DPA: Attached",
         "Liability Cap: EUR 95,000 (1x contract value)",
         "IP Ownership: Client retains all developed IP",
-        "Termination for Convenience: Yes (30 days notice)",
+        "Termination for Convenience: Yes (60 days notice)",
+        "Termination for Cause: Yes (immediate, material breach)",
         "Dispute Resolution: ICC Arbitration, London",
     ]
     for line in compliance:
@@ -517,7 +518,8 @@ def generate_pdf_cloudsecure():
 
     story.append(Paragraph("8. GOVERNING LAW", h2))
     story.append(Paragraph(
-        "Governed by <b>German law</b>. Disputes resolved by Munich Commercial Court. "
+        "Governed by <b>German law</b>. Disputes shall be resolved by mediation, failing which "
+        "by arbitration under ICC rules, seated in Frankfurt. "
         "English translation of this Agreement prevails in case of conflict.", body))
     story.append(Spacer(1, 0.5*cm))
 

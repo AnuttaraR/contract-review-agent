@@ -1,0 +1,469 @@
+{
+  "run_at": "2026-08-18T06:59:18.350131Z",
+  "overall_accuracy": 0.9882352941176471,
+  "total_fields": 85,
+  "total_correct": 84,
+  "documents": [
+    {
+      "file": "techsolutions_msa.pdf",
+      "field_count": 23,
+      "correct_count": 23,
+      "accuracy": 1.0,
+      "fields": {
+        "vendor_name": {
+          "gold": "TechSolutions Ltd",
+          "extracted": "TechSolutions Ltd",
+          "correct": true
+        },
+        "vendor_registration_number": {
+          "gold": "GB-12345678",
+          "extracted": "GB-12345678",
+          "correct": true
+        },
+        "contract_type": {
+          "gold": "MSA",
+          "extracted": "MSA",
+          "correct": true
+        },
+        "contract_value_total": {
+          "gold": 180000,
+          "extracted": 180000,
+          "correct": true
+        },
+        "contract_value_currency": {
+          "gold": "USD",
+          "extracted": "USD",
+          "correct": true
+        },
+        "payment_terms": {
+          "gold": "Net-30",
+          "extracted": "Net-30",
+          "correct": true
+        },
+        "start_date": {
+          "gold": "2026-09-01",
+          "extracted": "2026-09-01",
+          "correct": true
+        },
+        "end_date": {
+          "gold": "2029-08-31",
+          "extracted": "2029-08-31",
+          "correct": true
+        },
+        "auto_renewal": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "notice_period_days": {
+          "gold": 60,
+          "extracted": 60,
+          "correct": true
+        },
+        "governing_law": {
+          "gold": "England and Wales",
+          "extracted": "England and Wales",
+          "correct": true
+        },
+        "liability_cap": {
+          "gold": 180000,
+          "extracted": 180000,
+          "correct": true
+        },
+        "liability_cap_currency": {
+          "gold": "USD",
+          "extracted": "USD",
+          "correct": true
+        },
+        "indemnification_clause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "gdpr_compliant": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "data_processing_agreement": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "sla_uptime_percentage": {
+          "gold": 99.9,
+          "extracted": 99.9,
+          "correct": true
+        },
+        "sla_response_time_hours": {
+          "gold": 1,
+          "extracted": 1,
+          "correct": true
+        },
+        "sla_penalty_clause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "termination_for_convenience": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "termination_for_cause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "soc2_certified": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "security_breach_notification_hours": {
+          "gold": 72,
+          "extracted": 72,
+          "correct": true
+        }
+      },
+      "confidence_score": 0.93
+    },
+    {
+      "file": "globalsoft_sow.png",
+      "field_count": 20,
+      "correct_count": 20,
+      "accuracy": 1.0,
+      "fields": {
+        "vendor_name": {
+          "gold": "GlobalSoft Solutions",
+          "extracted": "GlobalSoft Solutions",
+          "correct": true
+        },
+        "vendor_registration_number": {
+          "gold": "IN-33445566",
+          "extracted": "IN-33445566",
+          "correct": true
+        },
+        "contract_type": {
+          "gold": "SOW",
+          "extracted": "SOW",
+          "correct": true
+        },
+        "contract_value_total": {
+          "gold": 95000,
+          "extracted": 95000,
+          "correct": true
+        },
+        "contract_value_currency": {
+          "gold": "EUR",
+          "extracted": "EUR",
+          "correct": true
+        },
+        "payment_terms": {
+          "gold": "Net-45",
+          "extracted": "Net-45",
+          "correct": true
+        },
+        "start_date": {
+          "gold": "2026-10-01",
+          "extracted": "2026-10-01",
+          "correct": true
+        },
+        "end_date": {
+          "gold": "2027-03-31",
+          "extracted": "2027-03-31",
+          "correct": true
+        },
+        "auto_renewal": {
+          "gold": false,
+          "extracted": false,
+          "correct": true
+        },
+        "notice_period_days": {
+          "gold": 60,
+          "extracted": 60,
+          "correct": true
+        },
+        "governing_law": {
+          "gold": "England and Wales",
+          "extracted": "England and Wales",
+          "correct": true
+        },
+        "liability_cap": {
+          "gold": 95000,
+          "extracted": 95000,
+          "correct": true
+        },
+        "liability_cap_currency": {
+          "gold": "EUR",
+          "extracted": "EUR",
+          "correct": true
+        },
+        "gdpr_compliant": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "data_processing_agreement": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "sla_uptime_percentage": {
+          "gold": 99.5,
+          "extracted": 99.5,
+          "correct": true
+        },
+        "sla_response_time_hours": {
+          "gold": 4,
+          "extracted": 4,
+          "correct": true
+        },
+        "sla_penalty_clause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "termination_for_convenience": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "ip_ownership": {
+          "gold": "Client",
+          "extracted": "Client retains all developed IP",
+          "correct": true
+        }
+      },
+      "confidence_score": 0.92
+    },
+    {
+      "file": "cloudsecure_saas.pdf",
+      "field_count": 24,
+      "correct_count": 23,
+      "accuracy": 0.9583333333333334,
+      "fields": {
+        "vendor_name": {
+          "gold": "CloudSecure GmbH",
+          "extracted": "CloudSecure GmbH",
+          "correct": true
+        },
+        "vendor_registration_number": {
+          "gold": "DE-55443322",
+          "extracted": "DE-55443322",
+          "correct": true
+        },
+        "contract_type": {
+          "gold": "SaaS License",
+          "extracted": "License",
+          "correct": true
+        },
+        "contract_value_total": {
+          "gold": 75000,
+          "extracted": 75000,
+          "correct": true
+        },
+        "contract_value_currency": {
+          "gold": "EUR",
+          "extracted": "EUR",
+          "correct": true
+        },
+        "payment_terms": {
+          "gold": "Net-30",
+          "extracted": "Net-30",
+          "correct": true
+        },
+        "start_date": {
+          "gold": "2026-07-01",
+          "extracted": "2026-07-01",
+          "correct": true
+        },
+        "end_date": {
+          "gold": "2027-06-30",
+          "extracted": "2027-06-30",
+          "correct": true
+        },
+        "auto_renewal": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "governing_law": {
+          "gold": "Germany",
+          "extracted": "German law",
+          "correct": false
+        },
+        "liability_cap": {
+          "gold": 150000,
+          "extracted": 150000,
+          "correct": true
+        },
+        "liability_cap_currency": {
+          "gold": "EUR",
+          "extracted": "EUR",
+          "correct": true
+        },
+        "indemnification_clause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "gdpr_compliant": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "data_processing_agreement": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "soc2_certified": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "iso27001_certified": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "security_breach_notification_hours": {
+          "gold": 24,
+          "extracted": 24,
+          "correct": true
+        },
+        "sla_uptime_percentage": {
+          "gold": 99.99,
+          "extracted": 99.99,
+          "correct": true
+        },
+        "sla_response_time_hours": {
+          "gold": 0.25,
+          "extracted": 0.25,
+          "correct": true
+        },
+        "sla_penalty_clause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "termination_for_convenience": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "termination_for_cause": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "ip_ownership": {
+          "gold": "Vendor",
+          "extracted": "Vendor retains ownership of the platform; Client retains ownership of all Client data, configurations, and custom integrations developed specifically for Client",
+          "correct": true
+        }
+      },
+      "confidence_score": 0.96
+    },
+    {
+      "file": "futuretech_development.pdf",
+      "field_count": 18,
+      "correct_count": 18,
+      "accuracy": 1.0,
+      "fields": {
+        "vendor_name": {
+          "gold": "FutureTech Systems",
+          "extracted": "FutureTech Systems Ltd",
+          "correct": true
+        },
+        "vendor_registration_number": {
+          "gold": "XX-00000000",
+          "extracted": "XX-00000000",
+          "correct": true
+        },
+        "contract_type": {
+          "gold": "Software Development",
+          "extracted": "Software Development Agreement",
+          "correct": true
+        },
+        "contract_value_total": {
+          "gold": 500000,
+          "extracted": 500000,
+          "correct": true
+        },
+        "contract_value_currency": {
+          "gold": "USD",
+          "extracted": "USD",
+          "correct": true
+        },
+        "payment_terms": {
+          "gold": "Net-7",
+          "extracted": "Net-7",
+          "correct": true
+        },
+        "start_date": {
+          "gold": "2026-10-01",
+          "extracted": "2026-10-01",
+          "correct": true
+        },
+        "end_date": {
+          "gold": "2027-09-30",
+          "extracted": "2027-09-30",
+          "correct": true
+        },
+        "auto_renewal": {
+          "gold": true,
+          "extracted": true,
+          "correct": true
+        },
+        "notice_period_days": {
+          "gold": 7,
+          "extracted": 7,
+          "correct": true
+        },
+        "governing_law": {
+          "gold": "Cayman Islands",
+          "extracted": "Cayman Islands \u2014 Grand Cayman",
+          "correct": true
+        },
+        "liability_cap": {
+          "gold": 1000,
+          "extracted": 1000,
+          "correct": true
+        },
+        "liability_cap_currency": {
+          "gold": "USD",
+          "extracted": "USD",
+          "correct": true
+        },
+        "indemnification_clause": {
+          "gold": false,
+          "extracted": false,
+          "correct": true
+        },
+        "gdpr_compliant": {
+          "gold": false,
+          "extracted": false,
+          "correct": true
+        },
+        "data_processing_agreement": {
+          "gold": false,
+          "extracted": false,
+          "correct": true
+        },
+        "termination_for_convenience": {
+          "gold": false,
+          "extracted": false,
+          "correct": true
+        },
+        "ip_ownership": {
+          "gold": "Vendor",
+          "extracted": "Vendor retains sole and exclusive ownership of all source code, algorithms, models, and derivative works at all times",
+          "correct": true
+        }
+      },
+      "confidence_score": 0.97
+    }
+  ]
+}

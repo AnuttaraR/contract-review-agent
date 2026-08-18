@@ -1,0 +1,47 @@
+{
+  "run_at": "2026-08-18T07:06:24.156919Z",
+  "routing_accuracy": 0.25,
+  "avg_seconds_per_contract": 26.599999999999998,
+  "documents": [
+    {
+      "file": "techsolutions_msa.pdf",
+      "expected": "AUTO_APPROVED",
+      "actual": "REJECTED",
+      "match": false,
+      "confidence": 0.81,
+      "risk": "HIGH",
+      "seconds": 24.4,
+      "reason": "HIGH risk assessment. Violations: IP ownership not addressed; policy requires explicit IP terms for all SaaS contracts.; Modern slavery statement absent; required for contracts exceeding $100,000 annually."
+    },
+    {
+      "file": "globalsoft_sow.png",
+      "expected": "NEEDS_REVIEW",
+      "actual": "REJECTED",
+      "match": false,
+      "confidence": 0.74,
+      "risk": "HIGH",
+      "seconds": 27.2,
+      "reason": "HIGH risk assessment. Violations: Vendor GlobalSoft Solutions is Tier 3 Pending Approval \u2014 contracts must not be auto-approved.; Payment terms Net-45 used without documented justification as required by policy."
+    },
+    {
+      "file": "cloudsecure_saas.pdf",
+      "expected": "AUTO_APPROVED",
+      "actual": "NEEDS_REVIEW",
+      "match": false,
+      "confidence": 0.94,
+      "risk": "MEDIUM",
+      "seconds": 27.6,
+      "reason": "Flagged for review: 2 policy item(s) to review; 5 compliance gap(s); medium risk level"
+    },
+    {
+      "file": "futuretech_development.pdf",
+      "expected": "REJECTED",
+      "actual": "REJECTED",
+      "match": true,
+      "confidence": 0.97,
+      "risk": "HIGH",
+      "seconds": 27.2,
+      "reason": "HIGH risk assessment. Violations: Liability cap USD 1,000 vs required minimum 1x annual contract value (~USD 500,000) \u2014 grossly non-compliant; Net-7 payment terms explicitly prohibited; policy mandates Net-30 minimum for contracts $100K\u2013$500K"
+    }
+  ]
+}
