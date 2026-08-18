@@ -16,9 +16,11 @@ Procurement teams burn hours re-reading the same clauses — payment terms, liab
 3. **Validate** — RAG lookup against 5 policy documents (ChromaDB + sentence-transformers), every flag cites its source clause
 4. **Route** — confidence + risk score → `AUTO_APPROVED` / `NEEDS_REVIEW` / `REJECTED`
 5. **Review** — Streamlit dashboard: queue, approvals, policy Q&A, evidence panel
+   
 
 ![Routing decision with cited policy evidence](docs/screenshot-review-result.png)
 *A processed contract routed to human review, with the exact retrieved policy chunks that justified the decision.*
+
 
 ## Results
 
@@ -148,9 +150,3 @@ contract-review-agent/
 └── generate_samples.py
 ```
 
----
-
-## Limitations
-
-<!-- TODO: fill in honestly before publishing — e.g. no citation-level confidence calibration,
-     no eval harness yet, OCR accuracy not benchmarked, single-language docs only, etc. -->
