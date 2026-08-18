@@ -125,6 +125,7 @@ Optional webhook server: `python main.py` → `POST /webhook/contract`, `GET /co
 | `techsolutions_msa.pdf` | PDF MSA | `AUTO_APPROVED` — Tier 1 vendor, clean terms |
 | `globalsoft_sow.png` | Scanned image SOW | `NEEDS_REVIEW` — Tier 3 pending vendor |
 | `vendor_contracts_batch.csv` | CSV batch | Mixed — low/medium/high risk rows |
+| `cloudsecure_clean_autoapprove.csv` | CSV, single contract | `AUTO_APPROVED` — Tier 1 vendor, no policy gaps by design |
 
 ---
 

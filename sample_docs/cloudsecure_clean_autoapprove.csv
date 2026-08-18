@@ -1,0 +1,44 @@
+﻿field,value
+contract_id,SaaS-2026-CS-AUTO-003
+contract_title,Cybersecurity Platform SaaS License Agreement
+vendor_name,CloudSecure GmbH
+vendor_registration_number,DE-55443322
+vendor_address,"Hauptstrasse 42, 80331 Munich, Germany"
+vendor_contact_email,contracts@cloudsecure.de
+vendor_contact_phone,+49 89 555 0100
+contract_type,SaaS License
+contract_value_total,65000
+contract_value_currency,USD
+payment_terms,Net-30
+payment_schedule,Quarterly in arrears
+start_date,2026-09-01
+end_date,2027-08-31
+auto_renewal,No
+notice_period_days,60
+governing_law,England and Wales
+dispute_resolution,Mediation first; failing which binding LCIA Arbitration in London
+liability_cap,130000
+liability_cap_currency,USD
+indemnification_clause,Yes
+ip_ownership,Client retains all data and outputs; Vendor retains platform IP
+data_processing_agreement,Yes
+gdpr_compliant,Yes
+soc2_certified,Yes
+iso27001_certified,Yes
+security_breach_notification,Yes - 72 hours
+modern_slavery_statement,Not applicable - contract value USD 65000 is below USD 100000 annual threshold
+insurance_pi_coverage,USD 5000000 Professional Indemnity
+insurance_pl_coverage,USD 2000000 Public Liability
+sla_uptime_percentage,99.9
+sla_response_time_hours,1
+sla_penalty_clause,Yes
+termination_for_convenience,Yes - 60 days written notice
+termination_for_cause,Yes - immediate on material breach
+services_description,Cloud-based cybersecurity SaaS platform providing threat intelligence SOC monitoring and automated incident response
+key_deliverable_1,24/7 SOC monitoring and alerting
+key_deliverable_2,Endpoint detection and response platform access
+key_deliverable_3,Monthly threat intelligence reports
+key_deliverable_4,Dedicated customer success manager
+signatory_vendor,Klaus Weber - CEO
+signatory_client,Sarah Thompson - Chief Procurement Officer
+execution_date,2026-08-20
