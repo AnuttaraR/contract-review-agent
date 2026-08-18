@@ -1,195 +1,152 @@
-# Vendor Contract Review AI Agent
+# Contract Review Agent
 
-An agentic AI pipeline that automatically processes vendor contracts received via email or direct upload, extracts structured data using Claude AI with vision capabilities, validates against internal policies via RAG, and routes to auto-approval or human review.
+An agentic AI pipeline that processes vendor contracts (PDF, scanned image, or CSV batch), extracts 25+ structured fields, validates them against internal policy via RAG, and routes each contract to auto-approval or a human review queue — with full policy citations behind every decision.
 
-**Built for the Flat Rock Technology Agentic AI Engineer test task.**
+---
+
+## Why this exists
+
+Procurement teams burn hours re-reading the same clauses — payment terms, liability caps, SLA thresholds, blacklisted terms — against every incoming contract. This agent automates that first pass: it reads the document, cross-checks it against a policy knowledge base, and only escalates to a human when confidence is genuinely low or risk is genuinely high.
 
 ---
 
 ## Demo
 
-**Business Scenario:** Vendor Contract Review Pipeline
+<!-- TODO: drop in demo.gif here before publishing -->
 
-When procurement receives a vendor contract (PDF, image scan, or CSV), the AI agent:
-1. **Parses** the document (PDF text extraction, image OCR via Claude vision, CSV parsing)
-2. **Extracts** 25+ structured fields using Claude claude-sonnet-4-6
-3. **Validates** against internal policies using RAG (ChromaDB + sentence-transformers)
-4. **Routes** automatically: ≥0.75 confidence → AUTO_APPROVE | 0.50–0.74 → NEEDS_REVIEW | <0.50 → REJECT
-5. **Displays** results in a Streamlit dashboard with human-in-the-loop review queue
+**Pipeline:**
+1. **Parse** — PDF text extraction, image OCR via Claude vision, or CSV batch parsing
+2. **Extract** — 25+ structured fields (parties, term, value, SLAs, liability, termination) via Claude
+3. **Validate** — RAG lookup against 5 policy documents (ChromaDB + sentence-transformers), every flag cites its source clause
+4. **Route** — confidence + risk score → `AUTO_APPROVED` / `NEEDS_REVIEW` / `REJECTED`
+5. **Review** — Streamlit dashboard: queue, approvals, policy Q&A, evidence panel
+
+## Results
+
+<!-- TODO: fill in from a labeled eval set before publishing — this is the headline number recruiters read first.
+     Suggested measure: field-level extraction accuracy against a hand-labeled subset of sample_docs/,
+     plus routing precision (% of AUTO_APPROVED that a human would also approve). -->
+
+| Metric | Result |
+|---|---|
+| Field extraction accuracy | TODO |
+| Routing precision (AUTO_APPROVED agreement w/ human) | TODO |
+| Avg. processing time / contract | TODO |
 
 ---
 
-## Tech Stack
+## Tech stack
 
 | Component | Technology |
 |---|---|
-| AI Extraction | Claude claude-sonnet-4-6 (Anthropic SDK) |
-| Vision / OCR | Claude claude-sonnet-4-6 vision |
+| Extraction + vision OCR | Claude (Anthropic SDK) |
 | RAG | ChromaDB + sentence-transformers (all-MiniLM-L6-v2) |
 | UI | Streamlit |
 | Storage | SQLite via SQLAlchemy |
 | Webhook API | FastAPI |
-| Email Intake | Gmail MCP connector (Claude Code) |
-| Doc Parsing | pdfplumber, Pillow, pandas |
-
----
-
-## Setup
-
-### Prerequisites
-- Python 3.11+
-- Anthropic API key
-
-### Install
-
-```bash
-git clone https://github.com/YOUR_USERNAME/flat-rock-ai-agent
-cd flat-rock-ai-agent
-python -m venv .venv
-.venv\Scripts\activate      # Windows
-pip install -r requirements.txt
-```
-
-### Configure
-
-```bash
-cp .env.example .env
-# Edit .env and set ANTHROPIC_API_KEY=sk-ant-...
-```
-
-### Generate sample documents
-
-```bash
-python generate_samples.py
-```
-
-### Load knowledge base & run UI
-
-```bash
-streamlit run streamlit_app.py
-```
-
-The Streamlit app auto-initialises the SQLite database and loads the ChromaDB knowledge base on first launch.
-
-### Run webhook server (optional)
-
-```bash
-python main.py
-# API available at http://localhost:8000
-# POST /webhook/contract  — upload a file for processing
-# GET  /contracts         — list all contracts
-# GET  /health            — health check
-```
+| Doc parsing | pdfplumber, Pillow, pandas |
 
 ---
 
 ## Architecture
 
 ```
-Email / Webhook / Upload
-         │
-         ▼
-   intake/parser.py          ← PDF, Image, CSV → raw text or base64
-         │
-         ▼
-   agent/extractor.py        ← Claude API extraction (text/vision)
-         │                       Returns: 25+ field structured JSON
-         ▼
-   knowledge_base/query.py   ← ChromaDB RAG similarity search
-         │                       Policy docs → vendor + compliance context
-         ▼
-   agent/extractor.py        ← Claude enrichment + policy validation
-         │
-         ▼
-   agent/router.py           ← Confidence scoring → routing decision
-         │
-         ▼
-   storage/database.py       ← SQLite persist
-         │
-         ▼
-   streamlit_app.py          ← Dashboard + Review Queue + Approvals
+Upload / Webhook
+       │
+       ▼
+ intake/parser.py         PDF, image, CSV → raw text or base64
+       │
+       ▼
+ agent/extractor.py       Claude extraction → 25+ field structured JSON
+       │
+       ▼
+ knowledge_base/query.py  RAG similarity search over policy docs
+       │
+       ▼
+ agent/extractor.py       Claude enrichment + policy validation
+       │
+       ▼
+ agent/router.py          Confidence + risk scoring → routing decision
+       │
+       ▼
+ storage/database.py      SQLite persist
+       │
+       ▼
+ streamlit_app.py         Dashboard, review queue, policy Q&A
 ```
 
 ---
 
-## Confidence Routing
+## Confidence routing
 
 | Score | Status | Action |
 |---|---|---|
-| ≥ 0.75 | AUTO_APPROVED | Stored immediately |
-| 0.50 – 0.74 | NEEDS_REVIEW | Added to review queue |
-| < 0.50 | REJECTED | Flagged, requires escalation |
+| ≥ 0.75 | `AUTO_APPROVED` | Stored immediately |
+| 0.50 – 0.74 | `NEEDS_REVIEW` | Added to review queue |
+| < 0.50 | `REJECTED` | Flagged, requires escalation |
 
-Risk assessment (LOW/MEDIUM/HIGH) also influences routing — HIGH risk overrides confidence threshold.
+`HIGH` risk overrides the confidence threshold regardless of score.
 
 ---
 
-## Knowledge Base (RAG)
+## Knowledge base (RAG)
 
-Five policy documents are loaded into ChromaDB:
-- `approved_vendors.md` — Tier 1/2/3 vendor registry + blacklist
+Five policy documents, retrieved per-contract and cited in the evidence panel:
+- `approved_vendors.md` — Tier 1/2/3 registry + blacklist
 - `contract_policies.md` — Financial limits, payment terms, liability caps
 - `sla_standards.md` — Uptime requirements, penalty structures
 - `compliance_requirements.md` — GDPR, AML, cybersecurity requirements
-- `blacklisted_terms.md` — Auto-reject and review-trigger contract terms
+- `blacklisted_terms.md` — Auto-reject and review-trigger terms
 
 ---
 
-## Email Intake (Gmail MCP)
+## Run it
 
-The `app/intake/email_listener.py` module integrates with Gmail via the Gmail MCP connector available in Claude Code. It polls for emails with attachments matching contract keywords and processes them through the same pipeline.
+```bash
+git clone https://github.com/AnuttaraR/contract-review-agent
+cd contract-review-agent
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+cp .env.example .env        # set ANTHROPIC_API_KEY
+python generate_samples.py
+streamlit run streamlit_app.py
+```
 
-For demo purposes, the Streamlit UI includes an "Email Simulation" mode that mimics email-based intake without requiring OAuth setup.
+Optional webhook server: `python main.py` → `POST /webhook/contract`, `GET /contracts`, `GET /health`.
 
 ---
 
-## API
+## Sample documents
 
-| Endpoint | Method | Description |
+| File | Type | Expected outcome |
 |---|---|---|
-| `/webhook/contract` | POST | Upload a contract file for processing |
-| `/contracts` | GET | List all processed contracts |
-| `/health` | GET | Service health check |
-
-Authentication: `X-Webhook-Secret` header (configurable via `WEBHOOK_SECRET` env var).
-
----
-
-## Sample Documents
-
-Generated by `generate_samples.py`:
-
-| File | Type | Expected Outcome |
-|---|---|---|
-| `techsolutions_msa.pdf` | PDF MSA | AUTO_APPROVED (Tier 1 vendor, clean terms) |
-| `globalsoft_sow.png` | Scanned image SOW | NEEDS_REVIEW (Tier 3 pending vendor) |
+| `techsolutions_msa.pdf` | PDF MSA | `AUTO_APPROVED` — Tier 1 vendor, clean terms |
+| `globalsoft_sow.png` | Scanned image SOW | `NEEDS_REVIEW` — Tier 3 pending vendor |
 | `vendor_contracts_batch.csv` | CSV batch | Mixed — low/medium/high risk rows |
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
-flat-rock-ai-agent/
+contract-review-agent/
 ├── app/
-│   ├── agent/
-│   │   ├── extractor.py      # Claude API extraction + RAG enrichment
-│   │   ├── prompts.py        # System prompts
-│   │   └── router.py         # Confidence scoring & routing
-│   ├── intake/
-│   │   ├── parser.py         # PDF, image, CSV parsing
-│   │   └── email_listener.py # Gmail MCP polling
-│   ├── storage/
-│   │   └── database.py       # SQLite / SQLAlchemy
-│   ├── knowledge_base/
-│   │   ├── loader.py         # ChromaDB ingestion
-│   │   └── query.py          # RAG query interface
-│   └── api/
-│       └── webhook.py        # FastAPI webhook
-├── knowledge_docs/           # RAG source documents
-├── sample_docs/              # Demo files (generated)
-├── streamlit_app.py          # Main UI
-├── main.py                   # FastAPI server entry point
-├── generate_samples.py       # Sample document generator
-└── requirements.txt
+│   ├── agent/          # extraction, prompts, routing
+│   ├── intake/          # PDF / image / CSV parsing
+│   ├── storage/          # SQLite / SQLAlchemy
+│   ├── knowledge_base/  # ChromaDB ingestion + query
+│   └── api/               # FastAPI webhook
+├── knowledge_docs/      # RAG source documents
+├── sample_docs/           # Demo files (generated)
+├── streamlit_app.py
+├── main.py
+└── generate_samples.py
 ```
+
+---
+
+## Limitations
+
+<!-- TODO: fill in honestly before publishing — e.g. no citation-level confidence calibration,
+     no eval harness yet, OCR accuracy not benchmarked, single-language docs only, etc. -->
