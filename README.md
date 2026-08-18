@@ -10,9 +10,6 @@ Procurement teams burn hours re-reading the same clauses — payment terms, liab
 
 ---
 
-## Demo
-
-<!-- TODO: drop in demo.gif here before publishing -->
 
 **Pipeline:**
 1. **Parse** — PDF text extraction, image OCR via Claude vision, or CSV batch parsing
