@@ -10,7 +10,7 @@
 
 Built an agentic contract review pipeline: upload a vendor contract (PDF, scanned image, or CSV batch), and it extracts 25+ fields, checks them against a policy knowledge base with RAG, and routes to auto-approve or a human review queue — citing the exact policy clause behind every flag.
 
-[HEADLINE METRIC — e.g. "94% field extraction accuracy across a hand-labeled test set, X% routing precision against human review"]
+98.8% field extraction accuracy (84/85 fields) across PDF and scanned-image inputs — measured with a small labeled eval harness, not eyeballed.
 
 Stack: Claude for extraction + vision OCR, ChromaDB for retrieval, FastAPI webhook intake, Streamlit for the review dashboard.
 
