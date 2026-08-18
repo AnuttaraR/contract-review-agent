@@ -10,13 +10,15 @@ Procurement teams burn hours re-reading the same clauses — payment terms, liab
 
 ---
 
-
 **Pipeline:**
 1. **Parse** — PDF text extraction, image OCR via Claude vision, or CSV batch parsing
 2. **Extract** — 25+ structured fields (parties, term, value, SLAs, liability, termination) via Claude
 3. **Validate** — RAG lookup against 5 policy documents (ChromaDB + sentence-transformers), every flag cites its source clause
 4. **Route** — confidence + risk score → `AUTO_APPROVED` / `NEEDS_REVIEW` / `REJECTED`
 5. **Review** — Streamlit dashboard: queue, approvals, policy Q&A, evidence panel
+
+![Routing decision with cited policy evidence](docs/screenshot-review-result.png)
+*A processed contract routed to human review, with the exact retrieved policy chunks that justified the decision.*
 
 ## Results
 
