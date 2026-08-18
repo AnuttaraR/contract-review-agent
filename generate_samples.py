@@ -702,7 +702,7 @@ def generate_pdf_nexus_clean():
         "by and between <b>CloudSecure GmbH</b>, a company incorporated in Germany "
         "(Registration No. <b>DE-55443322</b>), with its principal office at "
         "Hauptstrasse 42, 80331 Munich, Germany ('Vendor'), "
-        "and <b>Flat Rock Technology Ltd</b>, a company registered in England and Wales ('Client').", body))
+        "and <b>Northgate Procurement Ltd</b>, a company registered in England and Wales ('Client').", body))
     story.append(Spacer(1, 0.3*cm))
 
     story.append(Paragraph("VENDOR REGISTRY STATUS", h2))
@@ -856,8 +856,8 @@ def generate_pdf_nexus_clean():
         "For and on behalf of <b>CloudSecure GmbH</b>: "
         "Klaus Weber, Chief Executive Officer — k.weber@cloudsecure.de | Date: 2026-08-15", body))
     story.append(Paragraph(
-        "For and on behalf of <b>Flat Rock Technology Ltd</b>: "
-        "Sarah Thompson, Chief Procurement Officer — s.thompson@flatrocktech.com | Date: 2026-08-18", body))
+        "For and on behalf of <b>Northgate Procurement Ltd</b>: "
+        "Sarah Thompson, Chief Procurement Officer — s.thompson@northgateproc.com | Date: 2026-08-18", body))
 
     doc.build(story)
     print(f"Generated: {filepath}")
