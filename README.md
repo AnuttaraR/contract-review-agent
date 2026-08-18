@@ -1,21 +1,21 @@
 # Contract Review Agent
 
-An agentic AI pipeline that processes vendor contracts (PDF, scanned image, or CSV batch), extracts 25+ structured fields, validates them against internal policy via RAG, and routes each contract to auto-approval or a human review queue — with full policy citations behind every decision.
+An agentic AI pipeline that processes vendor contracts (PDF, scanned image, or CSV batch), extracts 25+ structured fields, validates them against internal policy via RAG, and routes each contract to auto-approval or a human review queue, with full policy citations behind every decision.
 
 ---
 
 ## Why this exists
 
-Procurement teams burn hours re-reading the same clauses — payment terms, liability caps, SLA thresholds, blacklisted terms — against every incoming contract. This agent automates that first pass: it reads the document, cross-checks it against a policy knowledge base, and only escalates to a human when confidence is genuinely low or risk is genuinely high.
+Procurement teams burn hours re-reading the same clauses (payment terms, liability caps, SLA thresholds, blacklisted terms) against every incoming contract. This agent automates that first pass: it reads the document, cross-checks it against a policy knowledge base, and only escalates to a human when confidence is genuinely low or risk is genuinely high.
 
 ---
 
 **Pipeline:**
-1. **Parse** — PDF text extraction, image OCR via Claude vision, or CSV batch parsing
-2. **Extract** — 25+ structured fields (parties, term, value, SLAs, liability, termination) via Claude
-3. **Validate** — RAG lookup against 5 policy documents (ChromaDB + sentence-transformers), every flag cites its source clause
-4. **Route** — confidence + risk score → `AUTO_APPROVED` / `NEEDS_REVIEW` / `REJECTED`
-5. **Review** — Streamlit dashboard: queue, approvals, policy Q&A, evidence panel
+1. **Parse**: PDF text extraction, image OCR via Claude vision, or CSV batch parsing
+2. **Extract**: 25+ structured fields (parties, term, value, SLAs, liability, termination) via Claude
+3. **Validate**: RAG lookup against 5 policy documents (ChromaDB + sentence-transformers), every flag cites its source clause
+4. **Route**: confidence + risk score → `AUTO_APPROVED` / `NEEDS_REVIEW` / `REJECTED`
+5. **Review**: Streamlit dashboard with queue, approvals, policy Q&A, and an evidence panel
 
 ![Routing decision with cited policy evidence](docs/screenshot-review-result.png)
 *A processed contract routed to human review, with the exact retrieved policy chunks that justified the decision.*
@@ -33,7 +33,7 @@ scanned image), graded against ground truth taken from the values used to genera
 Routing is deliberately conservative: it escalates ambiguous policy language toward human review
 rather than assuming compliance. Building the eval harness surfaced and fixed 3 real bugs (a
 numeric-threshold logic gap in the enrichment prompt, a coarse indemnification field, and a stale
-vendor-tier entry in the policy knowledge base) — full writeup in
+vendor-tier entry in the policy knowledge base). Full writeup in
 [EVAL_FINDINGS.md](EVAL_FINDINGS.md).
 
 ---
@@ -95,11 +95,11 @@ Upload / Webhook
 ## Knowledge base (RAG)
 
 Five policy documents, retrieved per-contract and cited in the evidence panel:
-- `approved_vendors.md` — Tier 1/2/3 registry + blacklist
-- `contract_policies.md` — Financial limits, payment terms, liability caps
-- `sla_standards.md` — Uptime requirements, penalty structures
-- `compliance_requirements.md` — GDPR, AML, cybersecurity requirements
-- `blacklisted_terms.md` — Auto-reject and review-trigger terms
+- `approved_vendors.md`: Tier 1/2/3 registry and blacklist
+- `contract_policies.md`: financial limits, payment terms, liability caps
+- `sla_standards.md`: uptime requirements, penalty structures
+- `compliance_requirements.md`: GDPR, AML, cybersecurity requirements
+- `blacklisted_terms.md`: auto-reject and review-trigger terms
 
 ---
 
@@ -124,10 +124,10 @@ Optional webhook server: `python main.py` → `POST /webhook/contract`, `GET /co
 
 | File | Type | Expected outcome |
 |---|---|---|
-| `techsolutions_msa.pdf` | PDF MSA | `AUTO_APPROVED` — Tier 1 vendor, clean terms |
-| `globalsoft_sow.png` | Scanned image SOW | `NEEDS_REVIEW` — Tier 3 pending vendor |
-| `vendor_contracts_batch.csv` | CSV batch | Mixed — low/medium/high risk rows |
-| `cloudsecure_clean_autoapprove.csv` | CSV, single contract | `AUTO_APPROVED` — Tier 1 vendor, no policy gaps by design |
+| `techsolutions_msa.pdf` | PDF MSA | `AUTO_APPROVED`: Tier 1 vendor, clean terms |
+| `globalsoft_sow.png` | Scanned image SOW | `NEEDS_REVIEW`: Tier 3 pending vendor |
+| `vendor_contracts_batch.csv` | CSV batch | Mixed: low, medium, and high risk rows |
+| `cloudsecure_clean_autoapprove.csv` | CSV, single contract | `AUTO_APPROVED`: Tier 1 vendor, no policy gaps by design |
 
 ---
 
@@ -152,5 +152,5 @@ contract-review-agent/
 
 ## Limitations
 
-<!-- TODO: fill in honestly before publishing — e.g. no citation-level confidence calibration,
-     no eval harness yet, OCR accuracy not benchmarked, single-language docs only, etc. -->
+<!-- TODO: fill in honestly before publishing. For example: no citation-level confidence
+     calibration, OCR accuracy not benchmarked separately, single-language docs only. -->
