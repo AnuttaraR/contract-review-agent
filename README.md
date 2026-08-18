@@ -20,6 +20,7 @@ Procurement teams burn hours re-reading the same clauses (payment terms, liabili
 ![Routing decision with cited policy evidence](docs/screenshot-review-result.png)
 *A processed contract routed to human review, with the exact retrieved policy chunks that justified the decision.*
 
+
 ## Results
 
 Measured with `eval_extraction.py` and `eval_routing.py` against 4 sample contracts (3 PDF, 1
@@ -148,9 +149,3 @@ contract-review-agent/
 └── generate_samples.py
 ```
 
----
-
-## Limitations
-
-<!-- TODO: fill in honestly before publishing. For example: no citation-level confidence
-     calibration, OCR accuracy not benchmarked separately, single-language docs only. -->
